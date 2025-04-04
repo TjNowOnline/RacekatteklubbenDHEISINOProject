@@ -2,26 +2,33 @@ package com.example.racekatteklubbendheisino.infrastructure;
 
 import com.example.racekatteklubbendheisino.domain.Member;
 
-public class JdbcMemberRepository implements MemberRepository {
+import java.util.List;
+
+public class JdbcMemberRepository implements CRUDRepository {
+
 
     @Override
-    public Member findByEmail(String email) {
+    public void save(Object entity) {
+
+    }
+
+    @Override
+    public void delete(Object entity) {
+
+    }
+
+    @Override
+    public void update(Object entity) {
+
+    }
+
+    @Override
+    public Object findByID(Object o) {
         return null;
     }
 
     @Override
-    public void save(Member member) {
-
+    public List findAll() {
+        return List.of();
     }
-
-    @Override
-    public void delete(Member member) {
-
-    }
-
-    @Override
-    public void update(Member member) {
-
-    }
-
 }

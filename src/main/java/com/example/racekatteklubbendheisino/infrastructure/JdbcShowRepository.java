@@ -4,29 +4,30 @@ import com.example.racekatteklubbendheisino.domain.Show;
 
 import java.util.List;
 
-public class JdbcShowRepository implements ShowRepository {
+public class JdbcShowRepository implements CRUDRepository {
+
     @Override
-    public List<Show> getAll() {
-        return List.of();
+    public void save(Object entity) {
+
     }
 
     @Override
-    public Show findById(Long id) {
+    public void delete(Object entity) {
+
+    }
+
+    @Override
+    public void update(Object entity) {
+
+    }
+
+    @Override
+    public Object findByID(Object o) {
         return null;
     }
 
     @Override
-    public void saveShow(Show show) {
-
-    }
-
-    @Override
-    public void deleteShow(Long id) {
-
-    }
-
-    @Override
-    public void updateShow(Show show) {
-
+    public List findAll() {
+        return List.of();
     }
 }

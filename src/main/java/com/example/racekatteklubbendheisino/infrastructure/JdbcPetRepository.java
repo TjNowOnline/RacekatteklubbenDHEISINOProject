@@ -4,31 +4,31 @@ import com.example.racekatteklubbendheisino.domain.Pet;
 
 import java.util.List;
 
-public class JdbcPetRepository implements PetRepository {
+public class JdbcPetRepository implements CRUDRepository {
 
 
     @Override
-    public List<Pet> getAll() {
-        return List.of();
+    public void save(Object entity) {
+
     }
 
     @Override
-    public Pet findById(Long id) {
+    public void delete(Object entity) {
+
+    }
+
+    @Override
+    public void update(Object entity) {
+
+    }
+
+    @Override
+    public Object findByID(Object o) {
         return null;
     }
 
     @Override
-    public void save(Pet pet) {
-
-    }
-
-    @Override
-    public void delete(Pet pet) {
-
-    }
-
-    @Override
-    public void update(Pet pet) {
-
+    public List findAll() {
+        return List.of();
     }
 }
