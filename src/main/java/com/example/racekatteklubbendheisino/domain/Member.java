@@ -17,6 +17,9 @@ public class Member {
     private String password;
     private List<Pet> pets;
 
+
+    public Member () {}
+
     public Member(Long id, String name, String email, String password) {
         this.id = id;
         this.name = name;

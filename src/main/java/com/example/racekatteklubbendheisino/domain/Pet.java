@@ -7,6 +7,9 @@ public class Pet {
     private Member owner;
     private int age;
 
+
+    public Pet() {}
+
     public Pet(Long id, String name, String breed, Member owner, int age) {
         this.id = id;
         this.name = name;

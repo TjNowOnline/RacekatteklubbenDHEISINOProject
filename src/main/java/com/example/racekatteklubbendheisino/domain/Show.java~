@@ -9,9 +9,6 @@ public class Show {
     private Pet pets;
     private Member members;
 
-
-    public Show() {}
-
     public Show(Long id, String name, String date, int time, String location, Pet pets, Member members) {
         this.id = id;
         this.name = name;
