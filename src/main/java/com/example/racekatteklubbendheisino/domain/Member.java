@@ -28,6 +28,9 @@ public class Member {
         this.pets = new ArrayList<>();
     }
 
+    public Member(String name, String email, String password) {
+    }
+
     public Long getId() {
         return id;
     }

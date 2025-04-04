@@ -30,4 +30,12 @@ public class MemberService {
     private boolean isPasswordValid(Member member, String inputPassword) {
         return member.getPassword().equals(inputPassword);
     }
+
+    public boolean register(Member member) {
+        if (crudRepository.findByID(member.getEmail()) == null) {
+            crudRepository.save(member);
+            return true;
+        }
+        return false;
+    }
 }
