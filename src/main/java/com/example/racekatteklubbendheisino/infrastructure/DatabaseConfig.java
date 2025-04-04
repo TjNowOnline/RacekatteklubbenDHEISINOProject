@@ -12,7 +12,7 @@ public class DatabaseConfig {
     public DataSource dataSource() {
         DriverManagerDataSource ds = new DriverManagerDataSource();
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        ds.setUrl("jdbc:mysql://localhost:3306/raceren_db");
+        ds.setUrl("jdbc:mysql://localhost:3306/racekatteklubben");
         ds.setUsername("root");
         ds.setPassword("root");
         return ds;
