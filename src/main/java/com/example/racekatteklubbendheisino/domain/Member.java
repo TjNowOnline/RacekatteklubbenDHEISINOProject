@@ -1,12 +1,19 @@
 package com.example.racekatteklubbendheisino.domain;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Member {
     private Long id;
+    @NotBlank(message = "Name cannot be blank")
     private String name;
+    @NotBlank(message = "Email cannot be blank")
+    @Email(message = "Not a valid Email")
     private String email;
+    @NotBlank(message = "Password cannot be blank")
     private String password;
     private List<Pet> pets;
 
