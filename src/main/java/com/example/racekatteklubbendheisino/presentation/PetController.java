@@ -18,7 +18,7 @@ public class PetController {
 
     @GetMapping("/create")
     public String showCreateForm() {
-        return "createPet";
+        return "addPet";
     }
 
     @PostMapping("/create")

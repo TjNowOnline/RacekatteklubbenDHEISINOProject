@@ -1,7 +1,9 @@
 package com.example.racekatteklubbendheisino;
 
 import com.example.racekatteklubbendheisino.application.MemberService;
+import com.example.racekatteklubbendheisino.domain.Member;
 import com.example.racekatteklubbendheisino.infrastructure.CRUDRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +15,8 @@ public class RacekatteklubbenDheisinoApplication {
 	}
 
 	@Bean
-	public MemberService memberService(CRUDRepository crudRepository) {
-		return new MemberService(crudRepository);
+	public MemberService memberService(@Qualifier("jdbcMemberRepository") CRUDRepository<?, ?> memberRepository) {
+		return new MemberService((CRUDRepository<Member, String>) memberRepository);
 	}
 
 
