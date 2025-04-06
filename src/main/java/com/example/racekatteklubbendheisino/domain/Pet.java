@@ -1,8 +1,12 @@
 package com.example.racekatteklubbendheisino.domain;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Pet {
     private Long id;
+    @NotBlank(message = "Name cannot be blank")
     private String name;
+    @NotBlank(message = "Breed cannot be blank")
     private String breed;
     private Member owner;
     private int age;
@@ -16,6 +20,12 @@ public class Pet {
         this.breed = breed;
         this.owner = owner;
         this.age = age;
+    }
+
+    public Pet(String name, int age, String breed) {
+    }
+
+    public Pet(Long id, String name, int age, String breed) {
     }
 
     public Long getId() {
