@@ -39,7 +39,12 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     @Override
     public Member findByID(String email) {
         String sql = "SELECT * FROM members WHERE email = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{email}, memberRowMapper());
+        try {
+            List<Member> results = jdbcTemplate.query(sql, new Object[]{email}, memberRowMapper());
+            return results.isEmpty() ? null : results.get(0);
+        } catch (Exception e) {
+            return null; // Or handle the exception differently if needed
+        }
     }
 
     @Override
@@ -50,6 +55,7 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
 
     private RowMapper<Member> memberRowMapper() {
         return (rs, rowNum) -> new Member(
+                rs.getLong("id"),
                 rs.getString("name"),
                 rs.getString("email"),
                 rs.getString("password")

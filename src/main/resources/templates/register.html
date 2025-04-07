@@ -1,19 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Register</title>
+    <title>Register - Racekatteklubben D'Heisino</title>
+    <style>
+        .error { color: red; }
+    </style>
 </head>
 <body>
 <h2>Register</h2>
-<form action="/register" method="post">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required><br>
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required><br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required><br>
+<form th:action="@{/register}" method="post">
+    <div>
+        <label>Name: <input type="text" name="name" required></label>
+    </div>
+    <div>
+        <label>Email: <input type="email" name="email" required></label>
+    </div>
+    <div>
+        <label>Password: <input type="password" name="password" required></label>
+    </div>
     <button type="submit">Register</button>
 </form>
+<div class="error" th:if="${error}" th:text="${error}"></div>
 </body>
 </html>
