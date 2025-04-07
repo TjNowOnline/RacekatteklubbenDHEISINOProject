@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Controller
 public class MemberController {
     private final MemberService memberService;
@@ -18,6 +20,16 @@ public class MemberController {
     @GetMapping("/login")
     public String showLogin() {
         return "login";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestParam String email, @RequestParam String password) {
+        Optional<Member> member = memberService.login(email, password);
+        if (member.isPresent()) {
+            // In a real application, you'd want to set up session management here
+            return "redirect:/dashboard"; // Redirect to a dashboard page on success
+        }
+        return "redirect:/login?error"; // Redirect back with error parameter
     }
 
     @GetMapping("/register")
