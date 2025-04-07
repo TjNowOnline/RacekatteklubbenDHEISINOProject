@@ -14,7 +14,7 @@ public class DatabaseConfig {
         ds.setDriverClassName("com.mysql.cj.jdbc.Driver");
         ds.setUrl("jdbc:mysql://localhost:3306/racekatteklubben");
         ds.setUsername("root");
-        ds.setPassword("TheisMan0504");
+        ds.setPassword("root");
         return ds;
     }
 }
