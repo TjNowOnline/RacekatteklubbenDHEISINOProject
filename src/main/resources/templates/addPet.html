@@ -2,36 +2,135 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Add New Pet</title>
+  <title>Add New Pet - Racekatteklubben D'Heisino</title>
   <style>
-    body { font-family: Arial, sans-serif; max-width: 400px; margin: 20px auto; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
-    input { width: 100%; padding: 8px; box-sizing: border-box; }
-    button { background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #45a049; }
-    .error { color: red; }
+    body {
+      font-family: 'Helvetica', Arial, sans-serif;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px;
+      background: #e6e8e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d1d5db" opacity="0.2" d="M20 30c5-5 10 5 0 10s-10-5 0-10zm60 40c5-5 10 5 0 10s-10-5 0-10zm30-20c5-5 10 5 0 10s-10-5 0-10zm-60-30c5-5 10 5 0 10s-10-5 0-10z"/></svg>') repeat;
+      color: #4a4a4a;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #5d6466;
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+    form {
+      background: #fff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+    form::before {
+      content: '🐱';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2em;
+      color: #9ba2a4;
+    }
+    .form-group {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 1.3em;
+      color: #5d6466;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 15px;
+      box-sizing: border-box;
+      border: 1px solid #c4c8c9;
+      border-radius: 10px;
+      font-size: 1.1em;
+      color: #4a4a4a;
+      transition: border-color 0.3s;
+    }
+    input:focus {
+      outline: none;
+      border-color: #9ba2a4;
+    }
+    input::placeholder {
+      color: #9ba2a4;
+      font-weight: 300;
+    }
+    button {
+      background-color: #5d6466;
+      color: #fff;
+      padding: 15px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1.2em;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #4a5153;
+    }
+    button::after {
+      content: '🐾';
+      margin-left: 8px;
+      font-size: 1.3em;
+    }
+    .error {
+      color: #e57373;
+      font-size: 1em;
+      text-align: center;
+      margin-top: 20px;
+      padding: 10px;
+      background: #fceeee;
+      border-radius: 8px;
+    }
+    .back-link {
+      text-align: center;
+      margin-top: 20px;
+    }
+    a {
+      color: #5d6466;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.1em;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #4a5153;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-<h1>Add New Pet</h1>
+<h1>Welcome a New Kitty</h1>
 <form th:action="@{/pets/create}" method="post">
   <div class="form-group">
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Whiskers" required>
   </div>
   <div class="form-group">
-    <label for="age">Age:</label>
-    <input type="number" id="age" name="age" required>
+    <label for="age">Age</label>
+    <input type="number" id="age" name="age" placeholder="2" required>
   </div>
   <div class="form-group">
-    <label for="breed">Breed:</label>
-    <input type="text" id="breed" name="breed" required>
+    <label for="breed">Breed</label>
+    <input type="text" id="breed" name="breed" placeholder="Tabby" required>
   </div>
   <div class="form-group">
-    <button type="submit">Add Pet</button>
+    <button type="submit">Add Kitty</button>
   </div>
 </form>
-<a href="/pets">Back to Pet List</a>
+<div class="back-link">
+  <a href="/pets">Back to Kitty List</a>
+</div>
 </body>
 </html>

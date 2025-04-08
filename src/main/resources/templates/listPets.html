@@ -2,21 +2,102 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>List Pets</title>
+  <title>List Pets - Racekatteklubben D'Heisino</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-    th { background-color: #f2f2f2; }
-    a { color: #4CAF50; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .logout-form { margin-top: 20px; }
-    button { background-color: #f44336; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
-    button:hover { background-color: #d32f2f; }
+    body {
+      font-family: 'Helvetica', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px;
+      background: #e6e8e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d1d5db" opacity="0.2" d="M20 30c5-5 10 5 0 10s-10-5 0-10zm60 40c5-5 10 5 0 10s-10-5 0-10zm30-20c5-5 10 5 0 10s-10-5 0-10zm-60-30c5-5 10 5 0 10s-10-5 0-10z"/></svg>') repeat;
+      color: #4a4a4a;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #5d6466;
+      margin-bottom: 40px;
+      font-weight: 500;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      margin-bottom: 40px;
+    }
+    th, td {
+      padding: 15px;
+      text-align: left;
+      font-size: 1.1em;
+    }
+    th {
+      background-color: #f9fafb;
+      color: #5d6466;
+      font-weight: 500;
+      border-bottom: 1px solid #c4c8c9;
+    }
+    td {
+      border-bottom: 1px solid #e5e7eb;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    a {
+      color: #5d6466;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    a:hover {
+      color: #4a5153;
+      text-decoration: underline;
+    }
+    .actions a {
+      margin-right: 15px;
+    }
+    .logout-form, .add-pet {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      background-color: #5d6466;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.2em;
+      font-weight: 500;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #4a5153;
+    }
+    button::after {
+      content: '🐾';
+      margin-left: 8px;
+      font-size: 1.3em;
+    }
+    .add-pet a {
+      display: inline-block;
+      padding: 12px 20px;
+      background: #fff;
+      border: 1px solid #c4c8c9;
+      border-radius: 10px;
+      font-size: 1.2em;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    .add-pet a:hover {
+      background: #f9fafb;
+      border-color: #9ba2a4;
+      text-decoration: none;
+    }
   </style>
 </head>
 <body>
-<h1>List of Your Pets</h1>
+<h1>Your Kitty Crew</h1>
 <table>
   <thead>
   <tr>
@@ -33,19 +114,21 @@
     <td th:text="${pet.name}"></td>
     <td th:text="${pet.age}"></td>
     <td th:text="${pet.breed}"></td>
-    <td>
+    <td class="actions">
       <a th:href="@{/pets/edit/{id}(id=${pet.id})}">Edit</a>
       <a th:href="@{/pets/delete/{id}(id=${pet.id})}">Delete</a>
     </td>
   </tr>
   </tbody>
 </table>
-<a href="/pets/create">Add New Pet</a>
 
-<!-- Logout Form -->
+<div class="add-pet">
+  <a href="/pets/create">Add New Kitty</a>
+</div>
+
 <div class="logout-form">
   <form th:action="@{/logout}" method="post">
-    <button type="submit">Logout</button>
+    <button type="submit">Paw Out</button>
   </form>
 </div>
 </body>
