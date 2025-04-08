@@ -1,6 +1,9 @@
 package com.example.racekatteklubbendheisino.config;
 
 import com.example.racekatteklubbendheisino.application.MemberUserDetailsService;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -10,6 +13,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -23,14 +29,15 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        // Configure the authentication provider directly in the HttpSecurity chain
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(memberUserDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
 
         http
-                .authenticationProvider(authProvider) // Add the provider here
+                .authenticationProvider(authProvider)
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/member/**").hasRole("MEMBER")
                         .requestMatchers("/pets/**", "/dashboard").authenticated()
                         .requestMatchers("/login", "/register", "/css/**").permitAll()
                         .anyRequest().permitAll()
@@ -38,7 +45,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/pets", true)
+                        .successHandler(customAuthenticationSuccessHandler()) // Use custom success handler
                         .failureUrl("/login?error")
                         .permitAll()
                 )
@@ -50,10 +57,25 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService() {
-        System.out.println("Providing UserDetailsService: " + memberUserDetailsService);
-        return memberUserDetailsService;
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            System.out.println("Authentication successful for user: " + authentication.getName());
+            authentication.getAuthorities().forEach(authority ->
+                    System.out.println("Granted Authority: " + authority.getAuthority())
+            );
+
+            if (authentication.getAuthorities().stream()
+                    .anyMatch(grantedAuthority ->
+                            grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
+                System.out.println("Redirecting to /admin");
+                response.sendRedirect("/admin");
+            } else {
+                System.out.println("Redirecting to /pets");
+                response.sendRedirect("/pets");
+            }
+        };
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -43,6 +43,6 @@ public class MemberController {
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "dashboard"; // Create this page or redirect to /pets
+        return "dashboard.html"; // Create this page or redirect to /pets
     }
 }

@@ -1,6 +1,7 @@
 package com.example.racekatteklubbendheisino.domain;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -11,6 +12,7 @@ public class Member implements UserDetails {
     private String name;
     private String email;    // Using email as the username
     private String password;
+    private String role;
 
     public Member() {}
 
@@ -27,10 +29,14 @@ public class Member implements UserDetails {
         this.password = password;
     }
 
-    // UserDetails methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); // Add roles if needed later
+        if (role == null) {
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        // Check if role already has the ROLE_ prefix
+        String roleWithPrefix = role.startsWith("ROLE_") ? role : "ROLE_" + role;
+        return Collections.singletonList(new SimpleGrantedAuthority(roleWithPrefix));
     }
 
     @Override
@@ -90,5 +96,13 @@ public class Member implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getRole() {
+        return role;
     }
 }

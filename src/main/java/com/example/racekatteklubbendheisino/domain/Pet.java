@@ -44,6 +44,13 @@ public class Pet {
         this.photoUrl = photoUrl;
     }
 
+    public void setMemberId(long memberId) {
+        if (this.owner == null) {
+            this.owner = new Member();
+        }
+        this.owner.setId(memberId);
+    }
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getName() { return name; }

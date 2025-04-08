@@ -1,11 +1,13 @@
 package com.example.racekatteklubbendheisino.infrastructure;
 
 import com.example.racekatteklubbendheisino.domain.Member;
+import com.example.racekatteklubbendheisino.domain.Pet;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class JdbcMemberRepository implements CRUDRepository<Member, String> {
@@ -18,8 +20,11 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
 
     @Override
     public void save(Member member) {
-        String sql = "INSERT INTO members (name, email, password) VALUES (?, ?, ?)";
-        jdbcTemplate.update(sql, member.getName(), member.getEmail(), member.getPassword());
+        String sql = "INSERT INTO members (name, email, password, role) VALUES (?, ?, ?, ?)";
+        String role = member.getRole() != null && !member.getRole().startsWith("ROLE_")
+                ? "ROLE_" + member.getRole().toUpperCase()
+                : member.getRole();
+        jdbcTemplate.update(sql, member.getName(), member.getEmail(), member.getPassword(), role);
     }
 
     @Override
@@ -30,8 +35,11 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
 
     @Override
     public void update(Member member) {
-        String sql = "UPDATE members SET name = ?, password = ? WHERE email = ?";
-        jdbcTemplate.update(sql, member.getName(), member.getPassword(), member.getEmail());
+        String sql = "UPDATE members SET name = ?, password = ?, role = ? WHERE email = ?";
+        String role = member.getRole() != null && !member.getRole().startsWith("ROLE_")
+                ? "ROLE_" + member.getRole().toUpperCase()
+                : member.getRole();
+        jdbcTemplate.update(sql, member.getName(), member.getPassword(), role, member.getEmail());
     }
 
     @Override
@@ -40,6 +48,7 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
         try {
             return jdbcTemplate.queryForObject(sql, memberRowMapper(), email);
         } catch (Exception e) {
+            System.err.println("Error loading member with email: " + email + ". Exception: " + e.getMessage());
             return null;
         }
     }
@@ -51,11 +60,36 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     }
 
     private RowMapper<Member> memberRowMapper() {
-        return (rs, rowNum) -> new Member(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getString("email"),
-                rs.getString("password")
-        );
+        return (rs, rowNum) -> {
+            Member member = new Member();
+            member.setId(rs.getLong("id"));
+            member.setName(rs.getString("name"));
+            member.setEmail(rs.getString("email"));
+            member.setPassword(rs.getString("password"));
+            member.setRole(rs.getString("role")); // Ensure this maps correctly
+            return member;
+        };
+    }
+
+    public Optional<Member> findById(Long memberId) {
+        String sql = "SELECT * FROM members WHERE id = ?";
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, memberRowMapper(), memberId));
+        } catch (Exception e) {
+            System.err.println("Error loading member with ID: " + memberId + ". Exception: " + e.getMessage());
+            return Optional.empty();
+        }
+    }
+
+    public List<Pet> findByMemberId(Long id) {
+        String sql = "SELECT * FROM pets WHERE member_id = ?";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Pet pet = new Pet();
+            pet.setId(rs.getLong("id"));
+            pet.setName(rs.getString("name"));
+            pet.setBreed(rs.getString("breed"));
+            pet.setMemberId(rs.getLong("member_id"));
+            return pet;
+        }, id);
     }
 }

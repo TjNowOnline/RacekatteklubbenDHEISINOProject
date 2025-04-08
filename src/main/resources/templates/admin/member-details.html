@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Member Details</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<div class="container">
+  <h1>Member Details</h1>
+
+  <div class="member-info" th:if="${member != null}">
+    <h2 th:text="${member.name}"></h2>
+    <p><strong>Email:</strong> <span th:text="${member.email}"></span></p>
+    <p><strong>Role:</strong> <span th:text="${member.role}"></span></p>
+
+<h3>Pets</h3>
+<table class="pets-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Breed</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:if="${pets.empty}">
+            <td colspan="5">This member has no registered pets</td>
+        </tr>
+        <tr th:each="pet : ${pets}">
+            <td th:text="${pet.id}"></td>
+            <td th:text="${pet.name}"></td>
+            <td th:text="${pet.breed}"></td>
+            <td th:text="${pet.age}"></td>
+            <td>
+                <a th:href="@{/admin/pets/{id}(id=${pet.id})}" class="btn btn-small">View</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+  </div>
+
+  <div th:if="${member == null}">
+    <p>Member not found.</p>
+  </div>
+
+  <div class="actions">
+    <a th:href="@{/admin}" class="btn">Back to Dashboard</a>
+  </div>
+</div>
+</body>
+</html>
