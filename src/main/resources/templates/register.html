@@ -4,7 +4,107 @@
     <title>Register - Racekatteklubben D'Heisino</title>
     <meta charset="UTF-8">
     <style>
-        /* Same CSS as login.html */
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 60px;
+            background: #e6e8e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d1d5db" opacity="0.2" d="M20 30c5-5 10 5 0 10s-10-5 0-10zm60 40c5-5 10 5 0 10s-10-5 0-10zm30-20c5-5 10 5 0 10s-10-5 0-10zm-60-30c5-5 10 5 0 10s-10-5 0-10z"/></svg>') repeat;
+            color: #4a4a4a;
+        }
+        h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #5d6466;
+            margin-bottom: 40px;
+            font-weight: 500;
+        }
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            color: #5d6466;
+            font-weight: 500;
+        }
+        input[type="email"], input[type="password"], input[type="text"] {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            box-sizing: border-box;
+            border: 1px solid #c4c8c9;
+            border-radius: 10px;
+            background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%239ba2a4" d="M12 6c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2m0-2C9.8 4 8 5.8 8 8s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4zm0 12c-2.7 0-8 1.3-8 4v2h16v-2c0-2.7-5.3-4-8-4zm0-2c3.3 0 6 2.7 6 6H6c0-3.3 2.7-6 6-6z"/></svg>') no-repeat 12px center;
+            font-size: 1.1em;
+            color: #4a4a4a;
+            transition: border-color 0.3s;
+        }
+        input[type="password"] {
+            background: #fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%239ba2a4" d="M12 17c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm6-9h-1V6c0-2.8-2.2-5-5-5S7 3.2 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM9 6c0-1.7 1.3-3 3-3s3 1.3 3 3v2H9V6zm9 14H6V10h12v10z"/></svg>') no-repeat 12px center;
+        }
+        input:focus {
+            outline: none;
+            border-color: #9ba2a4;
+        }
+        input::placeholder {
+            color: #9ba2a4;
+            font-weight: 300;
+        }
+        button {
+            background-color: #5d6466;
+            color: #fff;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1.2em;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #4a5153;
+        }
+        button::after {
+            content: '🐾';
+            margin-left: 8px;
+            font-size: 1.3em;
+        }
+        .error {
+            color: #e57373;
+            font-size: 1em;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background: #fceeee;
+            border-radius: 8px;
+        }
+        a {
+            color: #5d6466;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        a:hover {
+            color: #4a5153;
+        }
+        form {
+            background: #fff;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        form::before {
+            content: '🐱';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: #9ba2a4;
+        }
     </style>
 </head>
 <body>
