@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Role Management</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            max-width: 400px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<h1>Admin Role Management</h1>
+
+<!-- Form to assign a role -->
+<form id="assignRoleForm" method="POST" action="/roles/assign">
+    <h2>Assign Role</h2>
+    <label for="assignMemberId">Member ID:</label>
+    <input type="number" id="assignMemberId" name="memberId" required>
+
+    <label for="assignRole">Role:</label>
+    <select id="assignRole" name="role" required>
+        <option value="ROLE_ADMIN">Admin</option>
+        <option value="ROLE_MEMBER">Member</option>
+    </select>
+
+    <button type="submit">Assign Role</button>
+</form>
+
+<!-- Form to remove a role -->
+<form id="removeRoleForm" method="POST" action="/roles/remove">
+    <h2>Remove Role</h2>
+    <label for="removeMemberId">Member ID:</label>
+    <input type="number" id="removeMemberId" name="memberId" required>
+
+    <button type="submit">Remove Role</button>
+</form>
+
+</body>
+</html>
