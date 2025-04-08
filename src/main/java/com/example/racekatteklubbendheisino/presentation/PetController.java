@@ -18,8 +18,11 @@ public class PetController {
     }
 
     @GetMapping("/create")
-    public String showCreateForm(Model model) {
+    public String showCreateForm(Model model, @AuthenticationPrincipal Member loggedInMember) {
         model.addAttribute("pet", new Pet()); // For form binding if needed
+        if (loggedInMember != null) {
+            model.addAttribute("username", loggedInMember.getName()); // Changed to getName()
+        }
         return "addPet";
     }
 
@@ -34,7 +37,10 @@ public class PetController {
 
     @GetMapping
     public String listPets(Model model, @AuthenticationPrincipal Member loggedInMember) {
-        model.addAttribute("pets", petService.findPetsByOwnerId(loggedInMember.getId()));
+        if (loggedInMember != null) {
+            model.addAttribute("pets", petService.findPetsByOwnerId(loggedInMember.getId()));
+            model.addAttribute("username", loggedInMember.getName()); // Changed to getName()
+        }
         return "listPets";
     }
 
@@ -44,6 +50,7 @@ public class PetController {
                 .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
                 .map(pet -> {
                     model.addAttribute("pet", pet);
+                    model.addAttribute("username", loggedInMember.getName()); // Changed to getName()
                     return "editPet";
                 })
                 .orElse("redirect:/pets"); // Redirect if not found or not owned

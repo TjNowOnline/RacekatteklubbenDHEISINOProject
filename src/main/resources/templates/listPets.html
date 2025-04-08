@@ -16,8 +16,15 @@
       text-align: center;
       font-size: 2.5em;
       color: #5d6466;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
       font-weight: 500;
+    }
+    .greeting {
+      text-align: center;
+      font-size: 1.3em;
+      color: #5d6466;
+      margin-bottom: 30px;
+      font-weight: 400;
     }
     table {
       width: 100%;
@@ -97,6 +104,7 @@
   </style>
 </head>
 <body>
+<div class="greeting">Hi <span th:text="${username} ?: 'Friend'">Friend</span>! 🐾</div>
 <h1>Your Kitty Crew</h1>
 <table>
   <thead>
@@ -121,11 +129,9 @@
   </tr>
   </tbody>
 </table>
-
 <div class="add-pet">
   <a href="/pets/create">Add New Kitty</a>
 </div>
-
 <div class="logout-form">
   <form th:action="@{/logout}" method="post">
     <button type="submit">Paw Out</button>
