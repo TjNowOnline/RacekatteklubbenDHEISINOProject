@@ -1,40 +1,26 @@
 package com.example.racekatteklubbendheisino.application;
 
-import com.example.racekatteklubbendheisino.infrastructure.CRUDRepository;
 import com.example.racekatteklubbendheisino.domain.Member;
-import org.springframework.jdbc.core.JdbcTemplate;
-import java.util.Optional;
+import com.example.racekatteklubbendheisino.infrastructure.CRUDRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MemberService {
-    private final JdbcTemplate jdbcTemplate;
     private final CRUDRepository<Member, String> crudRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public MemberService(CRUDRepository<Member, String> crudRepository) {
         this.crudRepository = crudRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public Optional<Member> login(String email, String password) {
-        if (email == null || password == null) {
-            return Optional.empty();
+    public boolean register(Member member) {
+        if (crudRepository.findByID(member.getEmail()) == null) {
+            member.setPassword(passwordEncoder.encode(member.getPassword())); // Encode password
+            crudRepository.save(member);
+            return true;
         }
-
-        try {
-            Member member = crudRepository.findByID(email);
-            if (member != null && isPasswordValid(member, password)) {
-                return Optional.of(member);
-            }
-            return Optional.empty();
-        } catch (Exception e) {
-            return Optional.empty();
-        }
-    }
-
-    public Member findByEmail(String email) {
-        return jdbcTemplate.queryForObject("SELECT * FROM members WHERE email = ?",
-                new Object[]{email}, new MemberRowMapper());
-    }
-
-    private boolean isPasswordValid(Member member, String inputPassword) {
-        return member.getPassword().equals(inputPassword);
+        return false;
     }
 }

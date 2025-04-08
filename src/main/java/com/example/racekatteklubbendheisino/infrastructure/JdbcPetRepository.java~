@@ -73,4 +73,9 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
         return jdbcTemplate.query(sql, rowMapper, ownerId);
     }
 
+    @Override
+    public void save(Pet pet) {
+        String sql = "INSERT INTO pets (name, age, breed, owner_id) VALUES (?, ?, ?, ?)";
+        jdbcTemplate.update(sql, pet.getName(), pet.getAge(), pet.getBreed(), pet.getOwner().getId());
+    }
 }

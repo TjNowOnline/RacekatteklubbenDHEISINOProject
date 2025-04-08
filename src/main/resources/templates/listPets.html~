@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:c="">
+<head>
+  <meta charset="UTF-8">
+  <title>List Pets</title>
+</head>
+<body>
+<h1>List of Pets</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Breed</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <c:forEach var="pet" items="${pets}">
+    <tr>
+      <td>${pet.id}</td>
+      <td>${pet.name}</td>
+      <td>${pet.age}</td>
+      <td>${pet.breed}</td>
+      <td>
+        <a href="/pets/edit/${pet.id}">Edit</a>
+        <a href="/pets/delete/${pet.id}">Delete</a>
+      </td>
+    </tr>
+  </c:forEach>
+  </tbody>
+</table>
+<a href="/pets/create">Add New Pet</a>
+</body>
+</html>

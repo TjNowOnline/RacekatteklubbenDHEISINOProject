@@ -1,0 +1,30 @@
+package com.example.racekatteklubbendheisino.application;
+
+import com.example.racekatteklubbendheisino.domain.Member;
+import com.example.racekatteklubbendheisino.infrastructure.JdbcMemberRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class MemberUserDetailsService implements UserDetailsService {
+
+    private final JdbcMemberRepository memberRepository;
+
+    public MemberUserDetailsService(JdbcMemberRepository memberRepository) {
+        this.memberRepository = memberRepository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        System.out.println("Loading user with email: " + email);
+        Member member = memberRepository.findByID(email);
+        if (member == null) {
+            System.out.println("User not found in database: " + email);
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+        System.out.println("Found user: " + member.getEmail() + ", password hash: " + member.getPassword());
+        return member;
+    }
+}

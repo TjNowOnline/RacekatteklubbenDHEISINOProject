@@ -38,4 +38,7 @@ public class PetService {
             petRepository.delete(pet);
         }
     }
+    public List<Pet> findPetsByOwnerId(Long ownerId) {
+        return petRepository.findByOwnerId(ownerId);
+    }
 }

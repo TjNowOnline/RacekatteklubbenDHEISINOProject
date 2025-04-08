@@ -1,4 +1,4 @@
-package com.example.racekatteklubbendheisino.infrastructure;
+package com.example.racekatteklubbendheisino.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

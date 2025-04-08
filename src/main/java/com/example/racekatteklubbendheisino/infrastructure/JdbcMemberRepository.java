@@ -1,13 +1,11 @@
 package com.example.racekatteklubbendheisino.infrastructure;
 
 import com.example.racekatteklubbendheisino.domain.Member;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcMemberRepository implements CRUDRepository<Member, String> {
@@ -40,10 +38,9 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     public Member findByID(String email) {
         String sql = "SELECT * FROM members WHERE email = ?";
         try {
-            List<Member> results = jdbcTemplate.query(sql, new Object[]{email}, memberRowMapper());
-            return results.isEmpty() ? null : results.get(0);
+            return jdbcTemplate.queryForObject(sql, memberRowMapper(), email);
         } catch (Exception e) {
-            return null; // Or handle the exception differently if needed
+            return null;
         }
     }
 

@@ -8,8 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.Optional;
-
 @Controller
 public class MemberController {
     private final MemberService memberService;
@@ -20,17 +18,7 @@ public class MemberController {
 
     @GetMapping("/login")
     public String showLogin() {
-        return "login";
-    }
-
-    @PostMapping("/login")
-    public String login(@RequestParam String email, @RequestParam String password) {
-        Optional<Member> member = memberService.login(email, password);
-        if (member.isPresent()) {
-            // In a real application, you'd want to set up session management here
-            return "redirect:/dashboard"; // Redirect to a dashboard page on success
-        }
-        return "redirect:/login?error"; // Redirect back with error parameter
+        return "login"; // Spring Security will handle the POST
     }
 
     @GetMapping("/register")
@@ -42,7 +30,7 @@ public class MemberController {
     public String register(@RequestParam String name,
                            @RequestParam String email,
                            @RequestParam String password,
-                           Model model) {  // Add Model for error messaging
+                           Model model) {
         Member member = new Member(name, email, password);
         boolean isRegistered = memberService.register(member);
         if (isRegistered) {
@@ -51,5 +39,10 @@ public class MemberController {
             model.addAttribute("error", "Registration failed: Email already in use.");
             return "register";
         }
+    }
+
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "dashboard"; // Create this page or redirect to /pets
     }
 }

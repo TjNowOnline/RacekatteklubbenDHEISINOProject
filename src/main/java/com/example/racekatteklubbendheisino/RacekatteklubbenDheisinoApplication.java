@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 public class RacekatteklubbenDheisinoApplication {
@@ -15,10 +16,9 @@ public class RacekatteklubbenDheisinoApplication {
 	}
 
 	@Bean
-	public MemberService memberService(@Qualifier("jdbcMemberRepository") CRUDRepository<?, ?> memberRepository) {
-		return new MemberService((CRUDRepository<Member, String>) memberRepository);
+	public MemberService memberService(
+			@Qualifier("jdbcMemberRepository") CRUDRepository<Member, String> memberRepository,
+			PasswordEncoder passwordEncoder) {
+		return new MemberService(memberRepository, passwordEncoder);
 	}
-
-
 }
-

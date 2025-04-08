@@ -11,8 +11,20 @@ public class Pet {
     private Member owner;
     private int age;
 
-
     public Pet() {}
+
+    public Pet(String name, int age, String breed) {
+        this.name = name;
+        this.age = age;
+        this.breed = breed;
+    }
+
+    public Pet(Long id, String name, int age, String breed) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.breed = breed;
+    }
 
     public Pet(Long id, String name, String breed, Member owner, int age) {
         this.id = id;
@@ -20,12 +32,6 @@ public class Pet {
         this.breed = breed;
         this.owner = owner;
         this.age = age;
-    }
-
-    public Pet(String name, int age, String breed) {
-    }
-
-    public Pet(Long id, String name, int age, String breed) {
     }
 
     public Long getId() {
