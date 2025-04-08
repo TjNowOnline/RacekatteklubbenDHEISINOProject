@@ -1,4 +1,3 @@
-// src/main/java/com/example/racekatteklubbendheisino/presentation/PetController.java
 package com.example.racekatteklubbendheisino.presentation;
 
 import com.example.racekatteklubbendheisino.application.PetService;
@@ -19,7 +18,8 @@ public class PetController {
     }
 
     @GetMapping("/create")
-    public String showCreateForm() {
+    public String showCreateForm(Model model) {
+        model.addAttribute("pet", new Pet()); // For form binding if needed
         return "addPet";
     }
 
@@ -27,7 +27,7 @@ public class PetController {
     public String createPet(@RequestParam String name, @RequestParam int age, @RequestParam String breed,
                             @AuthenticationPrincipal Member loggedInMember) {
         Pet pet = new Pet(name, age, breed);
-        pet.setOwner(loggedInMember); // Set the logged-in user as the owner
+        pet.setOwner(loggedInMember);
         petService.savePet(pet);
         return "redirect:/pets";
     }
@@ -40,30 +40,36 @@ public class PetController {
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model, @AuthenticationPrincipal Member loggedInMember) {
-        petService.findPetById(id).ifPresent(pet -> {
-            if (pet.getOwner().getId().equals(loggedInMember.getId())) { // Check ownership
-                model.addAttribute("pet", pet);
-            }
-        });
-        return "editPet";
+        return petService.findPetById(id)
+                .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
+                .map(pet -> {
+                    model.addAttribute("pet", pet);
+                    return "editPet";
+                })
+                .orElse("redirect:/pets"); // Redirect if not found or not owned
     }
 
     @PostMapping("/edit")
     public String editPet(@RequestParam Long id, @RequestParam String name, @RequestParam int age,
                           @RequestParam String breed, @AuthenticationPrincipal Member loggedInMember) {
-        Pet pet = new Pet(id, name, age, breed);
-        pet.setOwner(loggedInMember); // Ensure owner remains the logged-in user
-        petService.updatePet(pet);
-        return "redirect:/pets";
+        return petService.findPetById(id)
+                .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
+                .map(pet -> {
+                    pet.setName(name);
+                    pet.setAge(age);
+                    pet.setBreed(breed);
+                    pet.setOwner(loggedInMember);
+                    petService.updatePet(pet);
+                    return "redirect:/pets";
+                })
+                .orElse("redirect:/pets"); // Redirect if not found or not owned
     }
 
     @GetMapping("/delete/{id}")
     public String deletePet(@PathVariable Long id, @AuthenticationPrincipal Member loggedInMember) {
-        petService.findPetById(id).ifPresent(pet -> {
-            if (pet.getOwner().getId().equals(loggedInMember.getId())) { // Check ownership
-                petService.deletePetById(id);
-            }
-        });
+        petService.findPetById(id)
+                .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
+                .ifPresent(pet -> petService.deletePetById(id));
         return "redirect:/pets";
     }
 }

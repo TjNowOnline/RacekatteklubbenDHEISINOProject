@@ -3,6 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <title>List Pets</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    a { color: #4CAF50; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .logout-form { margin-top: 20px; }
+    button { background-color: #f44336; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; }
+    button:hover { background-color: #d32f2f; }
+  </style>
 </head>
 <body>
 <h1>List of Your Pets</h1>
@@ -30,5 +41,12 @@
   </tbody>
 </table>
 <a href="/pets/create">Add New Pet</a>
+
+<!-- Logout Form -->
+<div class="logout-form">
+  <form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+  </form>
+</div>
 </body>
 </html>

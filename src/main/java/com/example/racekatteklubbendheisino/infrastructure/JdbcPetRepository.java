@@ -1,4 +1,3 @@
-// src/main/java/com/example/racekatteklubbendheisino/infrastructure/JdbcPetRepository.java
 package com.example.racekatteklubbendheisino.infrastructure;
 
 import com.example.racekatteklubbendheisino.domain.Member;
@@ -8,7 +7,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
@@ -39,38 +37,31 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
     @Override
     public Pet findByID(Long id) {
         String sql = "SELECT * FROM pets WHERE id = ?";
-        RowMapper<Pet> rowMapper = (rs, rowNum) -> new Pet(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getString("breed"),
-                new Member(rs.getLong("owner_id"), null, null, null), // Simplified for example
-                rs.getInt("age")
-        );
-        return jdbcTemplate.queryForObject(sql, rowMapper, id);
+        try {
+            return jdbcTemplate.queryForObject(sql, petRowMapper(), id);
+        } catch (Exception e) {
+            return null; // Handle no result gracefully
+        }
     }
 
     @Override
     public List<Pet> findAll() {
         String sql = "SELECT * FROM pets";
-        RowMapper<Pet> rowMapper = (rs, rowNum) -> new Pet(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getString("breed"),
-                new Member(rs.getLong("owner_id"), null, null, null), // Simplified for example
-                rs.getInt("age")
-        );
-        return jdbcTemplate.query(sql, rowMapper);
-    }
-    public List<Pet> findByOwnerId(Long ownerId) {
-        String sql = "SELECT * FROM pets WHERE owner_id = ?";
-        RowMapper<Pet> rowMapper = (rs, rowNum) -> new Pet(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getString("breed"),
-                new Member(rs.getLong("owner_id"), null, null, null),
-                rs.getInt("age")
-        );
-        return jdbcTemplate.query(sql, rowMapper, ownerId);
+        return jdbcTemplate.query(sql, petRowMapper());
     }
 
+    public List<Pet> findByOwnerId(Long ownerId) {
+        String sql = "SELECT * FROM pets WHERE owner_id = ?";
+        return jdbcTemplate.query(sql, petRowMapper(), ownerId);
+    }
+
+    private RowMapper<Pet> petRowMapper() {
+        return (rs, rowNum) -> new Pet(
+                        rs.getLong("id"),
+                        rs.getString("name"),
+                rs.getString("breed"),
+                new Member(rs.getLong("owner_id"), null, null, null),
+                rs.getInt("age") // Minimal Member object
+                );
+    }
 }

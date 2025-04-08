@@ -4,6 +4,7 @@ package com.example.racekatteklubbendheisino.presentation;
 import com.example.racekatteklubbendheisino.application.PetService;
 import com.example.racekatteklubbendheisino.domain.Pet;
 import com.example.racekatteklubbendheisino.domain.Member;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
