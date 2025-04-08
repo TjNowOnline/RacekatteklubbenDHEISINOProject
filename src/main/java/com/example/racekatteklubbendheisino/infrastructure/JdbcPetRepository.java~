@@ -57,11 +57,11 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
 
     private RowMapper<Pet> petRowMapper() {
         return (rs, rowNum) -> new Pet(
-                rs.getLong("id"),
-                rs.getString("name"),
-                rs.getInt("age"),
+                        rs.getLong("id"),
+                        rs.getString("name"),
                 rs.getString("breed"),
-                new Member(rs.getLong("owner_id"), null, null, null) // Minimal Member object
-        );
+                new Member(rs.getLong("owner_id"), null, null, null),
+                rs.getInt("age") // Minimal Member object
+                );
     }
 }

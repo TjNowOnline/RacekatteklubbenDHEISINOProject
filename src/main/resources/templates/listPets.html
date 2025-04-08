@@ -101,6 +101,12 @@
       border-color: #9ba2a4;
       text-decoration: none;
     }
+    img.pet-photo {
+      max-width: 60px;
+      max-height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
   </style>
 </head>
 <body>
@@ -113,6 +119,7 @@
     <th>Name</th>
     <th>Age</th>
     <th>Breed</th>
+    <th>Photo</th>
     <th>Actions</th>
   </tr>
   </thead>
@@ -122,6 +129,10 @@
     <td th:text="${pet.name}"></td>
     <td th:text="${pet.age}"></td>
     <td th:text="${pet.breed}"></td>
+    <td>
+      <img th:if="${pet.photoUrl != null}" th:src="${pet.photoUrl}" alt="Pet Photo" class="pet-photo">
+      <span th:if="${pet.photoUrl == null}">No Photo</span>
+    </td>
     <td class="actions">
       <a th:href="@{/pets/edit/{id}(id=${pet.id})}">Edit</a>
       <a th:href="@{/pets/delete/{id}(id=${pet.id})}">Delete</a>

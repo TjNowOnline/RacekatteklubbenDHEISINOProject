@@ -19,18 +19,20 @@ public class PetController {
 
     @GetMapping("/create")
     public String showCreateForm(Model model, @AuthenticationPrincipal Member loggedInMember) {
-        model.addAttribute("pet", new Pet()); // For form binding if needed
+        model.addAttribute("pet", new Pet());
         if (loggedInMember != null) {
-            model.addAttribute("username", loggedInMember.getName()); // Changed to getName()
+            model.addAttribute("username", loggedInMember.getName());
         }
         return "addPet";
     }
 
     @PostMapping("/create")
     public String createPet(@RequestParam String name, @RequestParam int age, @RequestParam String breed,
+                            @RequestParam(value = "photoUrl", required = false) String photoUrl,
                             @AuthenticationPrincipal Member loggedInMember) {
         Pet pet = new Pet(name, age, breed);
         pet.setOwner(loggedInMember);
+        pet.setPhotoUrl(photoUrl);
         petService.savePet(pet);
         return "redirect:/pets";
     }
@@ -39,7 +41,7 @@ public class PetController {
     public String listPets(Model model, @AuthenticationPrincipal Member loggedInMember) {
         if (loggedInMember != null) {
             model.addAttribute("pets", petService.findPetsByOwnerId(loggedInMember.getId()));
-            model.addAttribute("username", loggedInMember.getName()); // Changed to getName()
+            model.addAttribute("username", loggedInMember.getName());
         }
         return "listPets";
     }
@@ -50,15 +52,16 @@ public class PetController {
                 .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
                 .map(pet -> {
                     model.addAttribute("pet", pet);
-                    model.addAttribute("username", loggedInMember.getName()); // Changed to getName()
+                    model.addAttribute("username", loggedInMember.getName());
                     return "editPet";
                 })
-                .orElse("redirect:/pets"); // Redirect if not found or not owned
+                .orElse("redirect:/pets");
     }
 
     @PostMapping("/edit")
     public String editPet(@RequestParam Long id, @RequestParam String name, @RequestParam int age,
-                          @RequestParam String breed, @AuthenticationPrincipal Member loggedInMember) {
+                          @RequestParam String breed, @RequestParam(value = "photoUrl", required = false) String photoUrl,
+                          @AuthenticationPrincipal Member loggedInMember) {
         return petService.findPetById(id)
                 .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
                 .map(pet -> {
@@ -66,10 +69,11 @@ public class PetController {
                     pet.setAge(age);
                     pet.setBreed(breed);
                     pet.setOwner(loggedInMember);
+                    pet.setPhotoUrl(photoUrl);
                     petService.updatePet(pet);
                     return "redirect:/pets";
                 })
-                .orElse("redirect:/pets"); // Redirect if not found or not owned
+                .orElse("redirect:/pets");
     }
 
     @GetMapping("/delete/{id}")

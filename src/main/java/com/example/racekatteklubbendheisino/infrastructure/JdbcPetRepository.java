@@ -18,8 +18,8 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
 
     @Override
     public void save(Pet pet) {
-        String sql = "INSERT INTO pets (name, age, breed, owner_id) VALUES (?, ?, ?, ?)";
-        jdbcTemplate.update(sql, pet.getName(), pet.getAge(), pet.getBreed(), pet.getOwner().getId());
+        String sql = "INSERT INTO pets (name, age, breed, owner_id, photo_url) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, pet.getName(), pet.getAge(), pet.getBreed(), pet.getOwner().getId(), pet.getPhotoUrl());
     }
 
     @Override
@@ -30,8 +30,8 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
 
     @Override
     public void update(Pet pet) {
-        String sql = "UPDATE pets SET name = ?, age = ?, breed = ?, owner_id = ? WHERE id = ?";
-        jdbcTemplate.update(sql, pet.getName(), pet.getAge(), pet.getBreed(), pet.getOwner().getId(), pet.getId());
+        String sql = "UPDATE pets SET name = ?, age = ?, breed = ?, owner_id = ?, photo_url = ? WHERE id = ?";
+        jdbcTemplate.update(sql, pet.getName(), pet.getAge(), pet.getBreed(), pet.getOwner().getId(), pet.getPhotoUrl(), pet.getId());
     }
 
     @Override
@@ -40,7 +40,7 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
         try {
             return jdbcTemplate.queryForObject(sql, petRowMapper(), id);
         } catch (Exception e) {
-            return null; // Handle no result gracefully
+            return null;
         }
     }
 
@@ -57,11 +57,12 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
 
     private RowMapper<Pet> petRowMapper() {
         return (rs, rowNum) -> new Pet(
-                        rs.getLong("id"),
-                        rs.getString("name"),
+                rs.getLong("id"),
+                rs.getString("name"),
                 rs.getString("breed"),
                 new Member(rs.getLong("owner_id"), null, null, null),
-                rs.getInt("age") // Minimal Member object
-                );
+                rs.getInt("age"),
+                rs.getString("photo_url")
+        );
     }
 }
