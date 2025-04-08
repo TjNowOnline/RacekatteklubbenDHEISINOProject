@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send E-mail</title>
+</head>
+<body>
+<h2>Send en E-mail</h2>
+<form action="SendMailServlet" method="post">
+    <label for="to">Modtagerens E-mail:</label><br>
+    <input type="email" id="to" name="to" required><br><br>
+
+    <label for="subject">Emne:</label><br>
+    <input type="text" id="subject" name="subject" required><br><br>
+
+    <label for="message">Besked:</label><br>
+    <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+    <input type="submit" value="Send E-mail">
+</form>
+</body>
+</html>
