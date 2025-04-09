@@ -19,7 +19,7 @@ public class Mailsystem {
             props.put("mail.smtp.port", "587");
 
             String myAccountEmail = "tino03543@gmail.com";
-            String myPassword = "";
+            String myPassword = "olju sllh bfgq fejz";
 
             Session session = Session.getInstance(props, new Authenticator() {
                 @Override
