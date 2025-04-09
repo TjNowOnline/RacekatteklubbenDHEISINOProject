@@ -1,0 +1,88 @@
+package com.example.racekatteklubbendheisino.presentation;
+
+import com.example.racekatteklubbendheisino.domain.Member;
+import com.example.racekatteklubbendheisino.domain.Pet;
+import com.example.racekatteklubbendheisino.infrastructure.JdbcMemberRepository;
+import com.example.racekatteklubbendheisino.infrastructure.JdbcPetRepository;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@Controller
+@RequestMapping("/admin")
+public class AdminController {
+
+    private final JdbcMemberRepository memberRepository;
+    private final JdbcPetRepository petRepository;
+
+    public AdminController(JdbcMemberRepository memberRepository, JdbcPetRepository petRepository) {
+        this.memberRepository = memberRepository;
+        this.petRepository = petRepository;
+    }
+
+    @GetMapping
+    public String adminDashboard(Model model) {
+        List<Member> members = memberRepository.findAll();
+        model.addAttribute("members", members);
+        return "admin/dashboard"; // Matches templates/admin/dashboard.html
+    }
+
+    @GetMapping("/members/search")
+    public String searchMembers(@RequestParam("query") String query, Model model) {
+        List<Member> members = memberRepository.searchMembers(query);
+        model.addAttribute("members", members);
+        model.addAttribute("searchQuery", query);
+        return "admin/dashboard"; // Matches templates/admin/dashboard.html
+    }
+
+    @GetMapping("/members/{id}")
+    public String viewMemberDetails(@PathVariable Long id, Model model) {
+        memberRepository.findById(id).ifPresent(member -> {
+            model.addAttribute("member", member);
+            List<Pet> memberPets = petRepository.findByOwnerId(id);
+            model.addAttribute("pets", memberPets);
+        });
+        return "admin/member-details"; // Matches templates/admin/member-details.html
+    }
+
+    @GetMapping("/pets/{id}")
+    public String viewPetDetails(@PathVariable Long id, Model model) {
+        Pet pet = petRepository.findByID(id);
+        if (pet != null) {
+            model.addAttribute("pet", pet);
+            Member owner = memberRepository.findById(pet.getOwner().getId()).orElse(null);
+            model.addAttribute("owner", owner);
+        }
+        return "admin/pet-details"; // Matches templates/admin/pet-details.html
+    }
+
+    @GetMapping("/pets/{id}/edit")
+    public String showEditPetForm(@PathVariable Long id, Model model) {
+        Pet pet = petRepository.findByID(id);
+        if (pet != null) {
+            model.addAttribute("pet", pet);
+            model.addAttribute("members", memberRepository.findAll());
+        }
+        return "admin/edit-pet"; // Matches templates/admin/edit-pet.html
+    }
+
+    @PostMapping("/pets/{id}/edit")
+    public String updatePet(@PathVariable Long id, @ModelAttribute Pet pet) {
+        pet.setId(id);
+        petRepository.update(pet);
+        return "redirect:/admin/pets/" + id;
+    }
+
+    @PostMapping("/pets/{id}/delete")
+    public String deletePet(@PathVariable Long id) {
+        Pet pet = petRepository.findByID(id);
+        if (pet != null) {
+            Long ownerId = pet.getOwner().getId();
+            petRepository.delete(pet);
+            return "redirect:/admin/members/" + ownerId;
+        }
+        return "redirect:/admin";
+    }
+}
