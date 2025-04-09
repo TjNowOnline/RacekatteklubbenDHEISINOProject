@@ -5,6 +5,8 @@ import com.example.racekatteklubbendheisino.infrastructure.JdbcMemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class RoleService {
 
@@ -35,5 +37,7 @@ public class RoleService {
         memberRepository.save(member);
         return true;
     }
-
+    public List<Member> searchMembers(String query) {
+        return memberRepository.findByNameContainingIgnoreCaseOrEmailContainingIgnoreCase(query, query);
+    }
 }

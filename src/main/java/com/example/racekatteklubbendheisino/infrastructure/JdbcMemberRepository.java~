@@ -81,7 +81,7 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
         }, id);
     }
 
-
+    // New search method
     public List<Member> searchMembers(String query) {
         String searchQuery = "%" + query.toLowerCase() + "%";
         String sql = "SELECT * FROM members WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
@@ -89,7 +89,7 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
             return jdbcTemplate.query(sql, memberRowMapper(), searchQuery, searchQuery);
         } catch (Exception e) {
             System.err.println("Error searching members with query: " + query + ". Exception: " + e.getMessage());
-            return List.of();
+            return List.of(); // Return empty list on error
         }
     }
 
