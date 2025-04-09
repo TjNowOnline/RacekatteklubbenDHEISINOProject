@@ -5,10 +5,10 @@ import com.example.racekatteklubbendheisino.infrastructure.Mailsystem;
 
 public class SendMail {
 
-    public void sendMail() throws
+    public void sendMail(String recepient, String subject, String message) throws
             Exception {
         try {
-            Mailsystem.MailSystem.sendmail("dam004@edu.zealand.dk");
+                Mailsystem.MailSystem.sendmail(recepient, subject, message);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

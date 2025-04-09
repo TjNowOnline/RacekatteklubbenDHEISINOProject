@@ -3,6 +3,7 @@ package com.example.racekatteklubbendheisino.presentation;
 import com.example.racekatteklubbendheisino.application.PetService;
 import com.example.racekatteklubbendheisino.domain.Pet;
 import com.example.racekatteklubbendheisino.domain.Member;
+import com.example.racekatteklubbendheisino.infrastructure.Mailsystem;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,11 +30,14 @@ public class PetController {
     @PostMapping("/create")
     public String createPet(@RequestParam String name, @RequestParam int age, @RequestParam String breed,
                             @RequestParam(value = "photoUrl", required = false) String photoUrl,
-                            @AuthenticationPrincipal Member loggedInMember) {
+                            @AuthenticationPrincipal Member loggedInMember) throws Exception {
         Pet pet = new Pet(name, age, breed);
         pet.setOwner(loggedInMember);
         pet.setPhotoUrl(photoUrl);
         petService.savePet(pet);
+        String subject = "New Pet Added! :D";
+        String messageBody = String.format("Hello" + loggedInMember.getName() + "your pet" + pet.getName() + " whose breed is" + pet.getBreed() + " and age is " + pet.getAge() + "has been added to the database.");
+        Mailsystem.MailSystem.sendmail(loggedInMember.getEmail(), subject, messageBody);
         return "redirect:/pets";
     }
 
