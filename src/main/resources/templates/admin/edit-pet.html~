@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit Pet</title>
+  <style>
+    body {
+      font-family: 'Helvetica', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px;
+      background: #e6e8e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d1d5db" opacity="0.2" d="M20 30c5-5 10 5 0 10s-10-5 0-10zm60 40c5-5 10 5 0 10s-10-5 0-10zm30-20c5-5 10 5 0 10s-10-5 0-10zm-60-30c5-5 10 5 0 10s-10-5 0-10z"/></svg>') repeat;
+      color: #4a4a4a;
+    }
+
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      color: #5d6466;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 500;
+      color: #5d6466;
+      font-size: 1.1em;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      box-sizing: border-box;
+      border: 1px solid #c4c8c9;
+      border-radius: 10px;
+      font-size: 1.1em;
+      transition: border-color 0.3s;
+    }
+
+    input:hover, select:hover {
+      border-color: #9ba2a4;
+    }
+
+    button {
+      background-color: #5d6466;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.2em;
+      font-weight: 500;
+      width: 100%;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #4a5153;
+    }
+
+    button::after {
+      content: '🐾';
+      margin-left: 8px;
+      font-size: 1.3em;
+    }
+
+    .error {
+      color: #d9534f;
+      font-size: 1em;
+      margin-top: 5px;
+    }
+
+    .navigation {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-right: 10px;
+      padding: 8px 15px;
+      text-decoration: none;
+      background: #fff;
+      color: #5d6466;
+      border: 1px solid #c4c8c9;
+      border-radius: 10px;
+      font-size: 1.1em;
+      font-weight: 500;
+      transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+    }
+
+    .btn:hover {
+      background: #f9fafb;
+      color: #4a5153;
+      border-color: #9ba2a4;
+      text-decoration: none;
+    }
+
+    p {
+      text-align: center;
+      font-size: 1.1em;
+      color: #5d6466;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Edit Pet</h1>
+  <form th:if="${pet != null}" th:action="@{/admin/pets/{id}/edit(id=${pet.id})}" method="post">
+    <input type="hidden" name="id" th:value="${pet.id}">
+    <div class="form-group">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" th:value="${pet.name}" required>
+    </div>
+    <div class="form-group">
+      <label for="age">Age:</label>
+      <input type="number" id="age" name="age" th:value="${pet.age}" required>
+    </div>
+    <div class="form-group">
+      <label for="breed">Breed:</label>
+      <input type="text" id="breed" name="breed" th:value="${pet.breed}" required>
+    </div>
+    <div class="form-group">
+      <label for="photoUrl">Photo URL:</label>
+      <input type="text" id="photoUrl" name="photoUrl" th:value="${pet.photoUrl}">
+    </div>
+    <div class="form-group">
+      <label for="owner">Owner:</label>
+      <select id="owner" name="owner.id" required>
+        <option value="">Select an owner</option>
+        <option th:each="member : ${members}"
+                th:value="${member.id}"
+                th:text="${member.name}"
+                th:selected="${pet.owner != null && pet.owner.id == member.id}">
+        </option>
+      </select>
+    </div>
+    <div class="form-group">
+      <button type="submit">Update Pet</button>
+    </div>
+  </form>
+
+  <div th:if="${pet == null}">
+    <p>Pet not found.</p>
+  </div>
+  <div class="navigation">
+    <a th:href="@{/admin}" class="btn">Back to Dashboard</a>
+  </div>
+</div>
+</body>
+</html>
