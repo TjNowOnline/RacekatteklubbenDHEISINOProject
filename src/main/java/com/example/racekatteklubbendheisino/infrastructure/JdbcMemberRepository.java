@@ -59,6 +59,18 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
         return jdbcTemplate.query(sql, memberRowMapper());
     }
 
+    private RowMapper<Member> memberRowMapper() {
+        return (rs, rowNum) -> {
+            Member member = new Member();
+            member.setId(rs.getLong("id"));
+            member.setName(rs.getString("name"));
+            member.setEmail(rs.getString("email"));
+            member.setPassword(rs.getString("password"));
+            member.setRole(rs.getString("role")); // Ensure this maps correctly
+            return member;
+        };
+    }
+
     public Optional<Member> findById(Long memberId) {
         String sql = "SELECT * FROM members WHERE id = ?";
         try {
@@ -79,29 +91,5 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
             pet.setMemberId(rs.getLong("member_id"));
             return pet;
         }, id);
-    }
-
-
-    public List<Member> searchMembers(String query) {
-        String searchQuery = "%" + query.toLowerCase() + "%";
-        String sql = "SELECT * FROM members WHERE LOWER(name) LIKE ? OR LOWER(email) LIKE ?";
-        try {
-            return jdbcTemplate.query(sql, memberRowMapper(), searchQuery, searchQuery);
-        } catch (Exception e) {
-            System.err.println("Error searching members with query: " + query + ". Exception: " + e.getMessage());
-            return List.of();
-        }
-    }
-
-    private RowMapper<Member> memberRowMapper() {
-        return (rs, rowNum) -> {
-            Member member = new Member();
-            member.setId(rs.getLong("id"));
-            member.setName(rs.getString("name"));
-            member.setEmail(rs.getString("email"));
-            member.setPassword(rs.getString("password"));
-            member.setRole(rs.getString("role")); // Ensure this maps correctly
-            return member;
-        };
     }
 }

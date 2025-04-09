@@ -35,5 +35,4 @@ public class RoleService {
         memberRepository.save(member);
         return true;
     }
-
 }

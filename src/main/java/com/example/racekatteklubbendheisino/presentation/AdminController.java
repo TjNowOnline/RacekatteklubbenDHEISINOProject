@@ -29,18 +29,11 @@ public class AdminController {
         return "admin/dashboard";
     }
 
-    @GetMapping("/members/search")
-    public String searchMembers(@RequestParam("query") String query, Model model) {
-        List<Member> members = memberRepository.searchMembers(query);
-        model.addAttribute("members", members);
-        model.addAttribute("searchQuery", query);
-        return "admin/dashboard";
-    }
-
     @GetMapping("/members/{id}")
     public String viewMemberDetails(@PathVariable Long id, Model model) {
         memberRepository.findById(id).ifPresent(member -> {
             model.addAttribute("member", member);
+
             List<Pet> memberPets = petRepository.findByOwnerId(id);
             model.addAttribute("pets", memberPets);
         });
@@ -57,12 +50,12 @@ public class AdminController {
         }
         return "admin/pet-details";
     }
-
     @GetMapping("/pets/{id}/edit")
     public String showEditPetForm(@PathVariable Long id, Model model) {
         Pet pet = petRepository.findByID(id);
         if (pet != null) {
             model.addAttribute("pet", pet);
+            // Optional: add a list of all members for the owner dropdown
             model.addAttribute("members", memberRepository.findAll());
         }
         return "admin/edit-pet";
@@ -70,6 +63,7 @@ public class AdminController {
 
     @PostMapping("/pets/{id}/edit")
     public String updatePet(@PathVariable Long id, @ModelAttribute Pet pet) {
+        // Ensure we preserve the ID from the path
         pet.setId(id);
         petRepository.update(pet);
         return "redirect:/admin/pets/" + id;
