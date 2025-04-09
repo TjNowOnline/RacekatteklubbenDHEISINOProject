@@ -26,25 +26,26 @@ public class AdminController {
     public String adminDashboard(Model model) {
         List<Member> members = memberRepository.findAll();
         model.addAttribute("members", members);
-        return "admin/dashboard"; // Matches templates/admin/dashboard.html
+        return "admin/dashboard";
     }
 
-    @GetMapping("/members/search")
+    @GetMapping("/search")
     public String searchMembers(@RequestParam("query") String query, Model model) {
-        List<Member> members = memberRepository.searchMembers(query);
+        List<Member> members = memberRepository.findByNameOrEmail(query);
         model.addAttribute("members", members);
-        model.addAttribute("searchQuery", query);
-        return "admin/dashboard"; // Matches templates/admin/dashboard.html
+        model.addAttribute("searchQuery", query); // Optional: to display the search term
+        return "admin/dashboard";
     }
 
     @GetMapping("/members/{id}")
     public String viewMemberDetails(@PathVariable Long id, Model model) {
         memberRepository.findById(id).ifPresent(member -> {
             model.addAttribute("member", member);
+
             List<Pet> memberPets = petRepository.findByOwnerId(id);
             model.addAttribute("pets", memberPets);
         });
-        return "admin/member-details"; // Matches templates/admin/member-details.html
+        return "admin/member-details";
     }
 
     @GetMapping("/pets/{id}")
@@ -55,7 +56,7 @@ public class AdminController {
             Member owner = memberRepository.findById(pet.getOwner().getId()).orElse(null);
             model.addAttribute("owner", owner);
         }
-        return "admin/pet-details"; // Matches templates/admin/pet-details.html
+        return "admin/pet-details";
     }
 
     @GetMapping("/pets/{id}/edit")
@@ -65,7 +66,7 @@ public class AdminController {
             model.addAttribute("pet", pet);
             model.addAttribute("members", memberRepository.findAll());
         }
-        return "admin/edit-pet"; // Matches templates/admin/edit-pet.html
+        return "admin/edit-pet";
     }
 
     @PostMapping("/pets/{id}/edit")
