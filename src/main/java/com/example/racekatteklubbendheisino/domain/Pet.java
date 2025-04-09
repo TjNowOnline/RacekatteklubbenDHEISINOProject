@@ -3,6 +3,7 @@ package com.example.racekatteklubbendheisino.domain;
 import jakarta.validation.constraints.NotBlank;
 
 public class Pet {
+    private Long memberId;
     private Long id;
     @NotBlank(message = "Name cannot be blank")
     private String name;
