@@ -109,11 +109,67 @@
             margin-left: 8px;
             font-size: 1.3em;
         }
+
+        .search-container {
+            text-align: center;
+            margin: 20px 0 40px 0;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .search-form {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-input {
+            padding: 10px 15px;
+            font-size: 1.1em;
+            border: 1px solid #c4c8c9;
+            border-radius: 10px;
+            width: 70%;
+            background: #fff;
+            color: #4a4a4a;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: #9ba2a4;
+            box-shadow: 0 0 5px rgba(93, 100, 102, 0.2);
+        }
+
+        .search-btn {
+            padding: 10px 20px;
+            font-size: 1.1em;
+            background: #fff;
+            color: #5d6466;
+            border: 1px solid #c4c8c9;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .search-btn:hover {
+            background: #f9fafb;
+            color: #4a5153;
+            border-color: #9ba2a4;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Admin Dashboard</h1>
+
+    <div class="search-container">
+        <form th:action="@{/admin/search}" method="get" class="search-form">
+            <input type="text" name="query" class="search-input" placeholder="Search members...">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
 
     <h2>Members List</h2>
     <table>
