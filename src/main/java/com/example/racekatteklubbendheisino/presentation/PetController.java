@@ -36,7 +36,7 @@ public class PetController {
         pet.setPhotoUrl(photoUrl);
         petService.savePet(pet);
         String subject = "New Pet Added! :D";
-        String messageBody = String.format("Hello" + loggedInMember.getName() + "your pet" + pet.getName() + " whose breed is" + pet.getBreed() + " and age is " + pet.getAge() + "has been added to the database.");
+        String messageBody = String.format("Hello " + loggedInMember.getName() + " your pet " + pet.getName() + " whose breed is " + pet.getBreed() + " and age is " + pet.getAge() + "has been added to the database.");
         Mailsystem.MailSystem.sendmail(loggedInMember.getEmail(), subject, messageBody);
         return "redirect:/pets";
     }
