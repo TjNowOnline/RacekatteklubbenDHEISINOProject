@@ -65,4 +65,9 @@ public class JdbcPetRepository implements CRUDRepository<Pet, Long> {
                 rs.getString("photo_url")
         );
     }
+
+    public void deleteOldPets() {
+        String sql = "DELETE FROM pets WHERE age > 30";
+        jdbcTemplate.update(sql);
+    }
 }

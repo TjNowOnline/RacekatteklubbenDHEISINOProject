@@ -20,10 +20,15 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
 
     @Override
     public void save(Member member) {
-        String sql = "INSERT INTO members (name, email, password, role) VALUES (?, ?, ?, ?)";
-        String role = member.getRole() != null && !member.getRole().startsWith("ROLE_")
-                ? "ROLE_" + member.getRole().toUpperCase()
-                : member.getRole();
+        String sql = "INSERT INTO members (name, email, password, role, last_login) VALUES (?, ?, ?, ?, NOW())";
+
+        String role = member.getRole();
+        if (role == null || role.isEmpty()) {
+            role = "ROLE_MEMBER";
+        } else if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role.toUpperCase();
+        }
+
         jdbcTemplate.update(sql, member.getName(), member.getEmail(), member.getPassword(), role);
     }
 
@@ -46,7 +51,11 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     public Member findByID(String email) {
         String sql = "SELECT * FROM members WHERE email = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, memberRowMapper(), email);
+            List<Member> members = jdbcTemplate.query(sql, memberRowMapper(), email);
+            if (members.isEmpty()) {
+                return null;
+            }
+            return members.get(0);
         } catch (Exception e) {
             System.err.println("Error loading member with email: " + email + ". Exception: " + e.getMessage());
             return null;
@@ -91,5 +100,15 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
             pet.setMemberId(rs.getLong("member_id"));
             return pet;
         }, id);
+    }
+
+    public void deleteOldMembers() {
+        String sql = "DELETE FROM members WHERE last_login < DATE_SUB(NOW(), INTERVAL 1 YEAR)";
+        jdbcTemplate.update(sql);
+    }
+
+    public void updateLastLogin(String email) {
+        String sql = "UPDATE members SET last_login = NOW() WHERE email = ?";
+        jdbcTemplate.update(sql, email);
     }
 }

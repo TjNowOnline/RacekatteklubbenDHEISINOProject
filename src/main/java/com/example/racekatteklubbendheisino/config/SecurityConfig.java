@@ -1,6 +1,7 @@
 package com.example.racekatteklubbendheisino.config;
 
 import com.example.racekatteklubbendheisino.application.MemberUserDetailsService;
+import com.example.racekatteklubbendheisino.infrastructure.JdbcMemberRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,9 +23,11 @@ import java.io.IOException;
 public class SecurityConfig {
 
     private final MemberUserDetailsService memberUserDetailsService;
+    private final JdbcMemberRepository memberRepository;
 
-    public SecurityConfig(MemberUserDetailsService memberUserDetailsService) {
+    public SecurityConfig(MemberUserDetailsService memberUserDetailsService, JdbcMemberRepository memberRepository) {
         this.memberUserDetailsService = memberUserDetailsService;
+        this.memberRepository = memberRepository;
     }
 
     @Bean
@@ -60,6 +63,10 @@ public class SecurityConfig {
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
             System.out.println("Authentication successful for user: " + authentication.getName());
+
+            String email = authentication.getName();
+            memberRepository.updateLastLogin(email);
+
             authentication.getAuthorities().forEach(authority ->
                     System.out.println("Granted Authority: " + authority.getAuthority())
             );
@@ -75,7 +82,6 @@ public class SecurityConfig {
             }
         };
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
