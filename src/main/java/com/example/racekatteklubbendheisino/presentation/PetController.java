@@ -36,7 +36,7 @@ public class PetController {
         pet.setPhotoUrl(photoUrl);
         petService.savePet(pet);
         String subject = "New Pet Added! :D";
-        String messageBody = String.format("Hello " + loggedInMember.getName() + " your pet " + pet.getName() + " whose breed is " + pet.getBreed() + " and age is " + pet.getAge() + "has been added to the database.");
+        String messageBody = String.format("Hello " + loggedInMember.getName() + " your pet " + pet.getName() + " whose breed is " + pet.getBreed() + " and age is " + pet.getAge() + " has been added to the database.");
         Mailsystem.MailSystem.sendmail(loggedInMember.getEmail(), subject, messageBody);
         return "redirect:/pets";
     }
@@ -86,5 +86,17 @@ public class PetController {
                 .filter(pet -> pet.getOwner().getId().equals(loggedInMember.getId()))
                 .ifPresent(pet -> petService.deletePetById(id));
         return "redirect:/pets";
+    }
+
+    @PostMapping("/donate")
+    public String processDonation(@RequestParam("amount") int amount, Model model,
+                                  @AuthenticationPrincipal Member loggedInMember) {
+        if (loggedInMember != null) {
+            model.addAttribute("pets", petService.findPetsByOwnerId(loggedInMember.getId()));
+            model.addAttribute("username", loggedInMember.getName());
+            model.addAttribute("donateMessage", "Thanks, " + loggedInMember.getName() +
+                    "! Your $" + amount + " donation helps our kitties purr louder!");
+        }
+        return "listPets"; // Return to the same page with the message
     }
 }

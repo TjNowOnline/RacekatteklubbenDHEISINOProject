@@ -65,7 +65,6 @@
     tr:last-child td {
       border-bottom: none;
     }
-    /* Hover effects for cat rows */
     tr:hover td {
       background: #f9fafb;
       transform: translateX(10px);
@@ -88,7 +87,7 @@
     .actions a {
       margin-right: 15px;
     }
-    .logout-form, .add-pet {
+    .logout-form, .add-pet, .donate-form {
       text-align: center;
       margin-top: 20px;
       position: relative;
@@ -134,6 +133,19 @@
       object-fit: cover;
       transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
+    .donate-form input[type="number"] {
+      padding: 10px;
+      font-size: 1.1em;
+      border: 1px solid #c4c8c9;
+      border-radius: 8px;
+      margin-right: 10px;
+      width: 100px;
+    }
+    .donate-message {
+      color: #5d6466;
+      font-size: 1.1em;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
@@ -169,6 +181,14 @@
 </table>
 <div class="add-pet">
   <a href="/pets/create">Add New Kitty</a>
+</div>
+<div class="donate-form">
+  <form th:action="@{/pets/donate}" method="post">
+    <label for="amount">Support the Kitties ($):</label>
+    <input type="number" id="amount" name="amount" min="1" value="10" required/>
+    <button type="submit">Donate</button>
+  </form>
+  <p class="donate-message" th:text="${donateMessage}" th:if="${donateMessage}"></p>
 </div>
 <div class="logout-form">
   <form th:action="@{/logout}" method="post">
