@@ -17,16 +17,19 @@ public class MemberController {
     }
 
     @GetMapping("/login")
+    // Viser login-siden
     public String showLogin() {
-        return "login"; // Spring Security will handle the POST
+        return "login";
     }
 
     @GetMapping("/register")
+    // Viser registreringssiden
     public String showRegister() {
         return "register";
     }
 
     @PostMapping("/register")
+    // Håndterer registrering af nye medlemmer
     public String register(@RequestParam String name,
                            @RequestParam String email,
                            @RequestParam String password,
@@ -42,7 +45,8 @@ public class MemberController {
     }
 
     @GetMapping("/dashboard")
+    // Viser dashboard-siden
     public String dashboard() {
-        return "dashboard.html"; // Create this page or redirect to /pets
+        return "dashboard.html";
     }
 }

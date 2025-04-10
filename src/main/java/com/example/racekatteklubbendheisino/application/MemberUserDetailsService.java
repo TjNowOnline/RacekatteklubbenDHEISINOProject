@@ -14,18 +14,14 @@ public class MemberUserDetailsService implements UserDetailsService {
 
     public MemberUserDetailsService(JdbcMemberRepository memberRepository) {
         this.memberRepository = memberRepository;
-        System.out.println("MemberUserDetailsService initialized with repository: " + memberRepository);
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("Loading user with email: " + email);
         Member member = memberRepository.findByID(email);
         if (member == null) {
-            System.out.println("User not found in database: " + email);
             throw new UsernameNotFoundException("User not found with email: " + email);
         }
-        System.out.println("Found user: " + member.getEmail() + ", password hash: " + member.getPassword());
         return member;
     }
 }

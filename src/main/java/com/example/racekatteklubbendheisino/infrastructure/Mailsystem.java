@@ -10,7 +10,6 @@ public class Mailsystem {
 
     public static class MailSystem {
         public static void sendmail(String recepient, String subject, String messageBody) throws Exception {
-            System.out.println("Prepering to send mail");
 
             Properties props = new Properties();
             props.put("mail.smtp.auth", "true");
@@ -29,7 +28,6 @@ public class Mailsystem {
             });
             Message message = prepareMessage(session, myAccountEmail, recepient, subject,messageBody);
             Transport.send(message);
-            System.out.println("Sent message successfully....");
 
         }
 
@@ -48,4 +46,3 @@ public class Mailsystem {
         }
     }
 }
-

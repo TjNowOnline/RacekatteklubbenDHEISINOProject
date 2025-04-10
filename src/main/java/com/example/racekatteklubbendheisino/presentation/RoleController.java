@@ -21,6 +21,7 @@ public class RoleController {
     }
 
     @PostMapping("/assign")
+    // Tildeler en rolle til et medlem
     public ResponseEntity<String> assignRole(@RequestParam Long memberId, @RequestParam String role) {
         boolean success = roleService.assignRoleToMember(memberId, role);
         if (success) {
@@ -30,6 +31,7 @@ public class RoleController {
     }
 
     @PostMapping("/remove")
+    // Fjerner en rolle fra et medlem
     public ResponseEntity<String> removeRole(@RequestParam Long memberId) {
         boolean success = roleService.removeRoleFromMember(memberId);
         if (success) {
@@ -39,6 +41,7 @@ public class RoleController {
     }
 
     @GetMapping("/members")
+    // Henter en liste over alle medlemmer
     public ResponseEntity<List<Member>> getAllMembers() {
         List<Member> members = memberRepository.findAll();
         return ResponseEntity.ok(members);

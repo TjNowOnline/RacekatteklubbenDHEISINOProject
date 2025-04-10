@@ -14,24 +14,25 @@ public class RoleService {
         this.memberRepository = memberRepository;
     }
 
+    // Tildel en rolle til et medlem
     @Transactional
     public boolean assignRoleToMember(Long memberId, String role) {
         Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) {
-            return false; // Member not found
+            return false;
         }
         member.setRole(role);
-        memberRepository.update(member); // Use update instead of save for existing members
+        memberRepository.update(member);
         return true;
     }
-
+    // Fjern en rolle fra et medlem
     @Transactional
     public boolean removeRoleFromMember(Long memberId) {
-        Member member = (Member) memberRepository.findById(memberId).orElse(null);
+        Member member = memberRepository.findById(memberId).orElse(null);
         if (member == null) {
-            return false; // Member not found
+            return false;
         }
-        member.setRole(null); // Remove role
+        member.setRole(null);
         memberRepository.save(member);
         return true;
     }

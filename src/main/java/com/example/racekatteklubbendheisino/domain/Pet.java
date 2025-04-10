@@ -11,7 +11,7 @@ public class Pet {
     private String breed;
     private Member owner;
     private int age;
-    private String photoUrl; // New field for image URL
+    private String photoUrl;
 
     public Pet() {}
 

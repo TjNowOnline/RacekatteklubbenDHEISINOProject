@@ -19,9 +19,11 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     }
 
     @Override
+    // Gemmer et nyt medlem i databasen
     public void save(Member member) {
         String sql = "INSERT INTO members (name, email, password, role, last_login) VALUES (?, ?, ?, ?, NOW())";
 
+        // Tjekker og formaterer rollen, hvis den ikke er korrekt
         String role = member.getRole();
         if (role == null || role.isEmpty()) {
             role = "ROLE_MEMBER";
@@ -33,12 +35,14 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     }
 
     @Override
+    // Sletter et medlem fra databasen baseret på email
     public void delete(Member member) {
         String sql = "DELETE FROM members WHERE email = ?";
         jdbcTemplate.update(sql, member.getEmail());
     }
 
     @Override
+    // Opdaterer et medlems oplysninger i databasen
     public void update(Member member) {
         String sql = "UPDATE members SET name = ?, password = ?, role = ? WHERE email = ?";
         String role = member.getRole() != null && !member.getRole().startsWith("ROLE_")
@@ -48,6 +52,7 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     }
 
     @Override
+    // Finder et medlem baseret på email
     public Member findByID(String email) {
         String sql = "SELECT * FROM members WHERE email = ?";
         try {
@@ -63,11 +68,13 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
     }
 
     @Override
+    // Henter alle medlemmer fra databasen
     public List<Member> findAll() {
         String sql = "SELECT * FROM members";
         return jdbcTemplate.query(sql, memberRowMapper());
     }
 
+    // Finder et medlem baseret på ID
     public Optional<Member> findById(Long memberId) {
         String sql = "SELECT * FROM members WHERE id = ?";
         try {
@@ -78,6 +85,7 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
         }
     }
 
+    // Finder kæledyr, der tilhører et medlem baseret på ID
     public List<Pet> findByMemberId(Long id) {
         String sql = "SELECT * FROM pets WHERE member_id = ?";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
@@ -90,22 +98,26 @@ public class JdbcMemberRepository implements CRUDRepository<Member, String> {
         }, id);
     }
 
+    // Sletter medlemmer, der ikke har logget ind i over et år
     public void deleteOldMembers() {
         String sql = "DELETE FROM members WHERE last_login < DATE_SUB(NOW(), INTERVAL 1 YEAR)";
         jdbcTemplate.update(sql);
     }
 
+    // Opdaterer sidste login-tidspunkt for et medlem
     public void updateLastLogin(String email) {
         String sql = "UPDATE members SET last_login = NOW() WHERE email = ?";
         jdbcTemplate.update(sql, email);
     }
 
+    // Finder medlemmer baseret på navn eller email
     public List<Member> findByNameOrEmail(String query) {
         String sql = "SELECT * FROM members WHERE name LIKE ? OR email LIKE ?";
         String searchTerm = "%" + query + "%";
         return jdbcTemplate.query(sql, memberRowMapper(), searchTerm, searchTerm);
     }
 
+    // Mapper database-rækker til Member-objekter
     private RowMapper<Member> memberRowMapper() {
         return (rs, rowNum) -> {
             Member member = new Member();

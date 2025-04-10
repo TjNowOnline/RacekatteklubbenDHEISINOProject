@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Håndterer generelle fejl og viser en generel fejlside
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleException(Exception ex, Model model, HttpServletRequest request) {
@@ -19,12 +20,11 @@ public class GlobalExceptionHandler {
         return "error/general";
     }
 
+    // Håndterer "ressource ikke fundet" fejl og viser en 404-side
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleResourceNotFoundException(ResourceNotFoundException ex, Model model) {
         model.addAttribute("errorMessage", ex.getMessage());
         return "error/not-found";
     }
-
-    // Add more specific exception handlers as needed
 }

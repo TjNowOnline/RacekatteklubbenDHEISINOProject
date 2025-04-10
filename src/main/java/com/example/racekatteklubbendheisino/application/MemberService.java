@@ -15,6 +15,7 @@ public class MemberService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Registrerer en ny bruger, hvis e-mailen ikke allerede findes
     public boolean register(Member member) {
         if (crudRepository.findByID(member.getEmail()) == null) {
             member.setPassword(passwordEncoder.encode(member.getPassword())); // Encode password

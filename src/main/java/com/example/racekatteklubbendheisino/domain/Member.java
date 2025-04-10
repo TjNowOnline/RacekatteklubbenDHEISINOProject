@@ -35,7 +35,6 @@ public class Member implements UserDetails {
         if (role == null) {
             return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         }
-        // Check if role already has the ROLE_ prefix
         String roleWithPrefix = role.startsWith("ROLE_") ? role : "ROLE_" + role;
         return Collections.singletonList(new SimpleGrantedAuthority(roleWithPrefix));
     }
@@ -70,7 +69,6 @@ public class Member implements UserDetails {
         return true;
     }
 
-    // Existing getters and setters
     public Long getId() {
         return id;
     }

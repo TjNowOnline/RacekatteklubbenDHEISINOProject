@@ -23,6 +23,7 @@ public class AdminController {
     }
 
     @GetMapping
+    // Viser admin-dashboardet med en liste over alle medlemmer
     public String adminDashboard(Model model) {
         List<Member> members = memberRepository.findAll();
         model.addAttribute("members", members);
@@ -30,6 +31,7 @@ public class AdminController {
     }
 
     @GetMapping("/search")
+    // Søger efter medlemmer baseret på navn eller e-mail
     public String searchMembers(@RequestParam("query") String query, Model model) {
         List<Member> members = memberRepository.findByNameOrEmail(query);
         model.addAttribute("members", members);
@@ -38,6 +40,7 @@ public class AdminController {
     }
 
     @GetMapping("/members/{id}")
+    // Viser detaljer om et specifikt medlem og deres kæledyr
     public String viewMemberDetails(@PathVariable Long id, Model model) {
         memberRepository.findById(id).ifPresent(member -> {
             model.addAttribute("member", member);
@@ -49,6 +52,7 @@ public class AdminController {
     }
 
     @GetMapping("/pets/{id}")
+    // Viser detaljer om et specifikt kæledyr og dets ejer
     public String viewPetDetails(@PathVariable Long id, Model model) {
         Pet pet = petRepository.findByID(id);
         if (pet != null) {
@@ -60,6 +64,7 @@ public class AdminController {
     }
 
     @GetMapping("/pets/{id}/edit")
+    // Viser formularen til at redigere et kæledyrs oplysninger
     public String showEditPetForm(@PathVariable Long id, Model model) {
         Pet pet = petRepository.findByID(id);
         if (pet != null) {
@@ -70,6 +75,7 @@ public class AdminController {
     }
 
     @PostMapping("/pets/{id}/edit")
+    // Opdaterer et kæledyrs oplysninger
     public String updatePet(@PathVariable Long id, @ModelAttribute Pet pet) {
         pet.setId(id);
         petRepository.update(pet);
@@ -77,6 +83,7 @@ public class AdminController {
     }
 
     @PostMapping("/pets/{id}/delete")
+    // Sletter et kæledyr og redirecter til ejerens side
     public String deletePet(@PathVariable Long id) {
         Pet pet = petRepository.findByID(id);
         if (pet != null) {

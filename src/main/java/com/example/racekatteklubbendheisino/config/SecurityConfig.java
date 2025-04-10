@@ -59,6 +59,7 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // Håndterer hvad der sker efter login
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
@@ -77,6 +78,7 @@ public class SecurityConfig {
         };
     }
 
+    // Krypterer adgangskoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
