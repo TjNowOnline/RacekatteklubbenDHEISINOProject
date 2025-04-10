@@ -1,5 +1,7 @@
 package com.example.racekatteklubbendheisino.infrastructure;
 
+import com.example.racekatteklubbendheisino.domain.Show;
+
 import java.util.List;
 
 public class JdbcShowRepository implements CRUDRepository {
