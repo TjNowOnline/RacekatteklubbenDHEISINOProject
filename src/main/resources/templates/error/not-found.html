@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Not Found - Racekatteklubben D'Heisino</title>
+  <style>
+    body {
+      font-family: 'Helvetica', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px;
+      background: #e6e8e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d1d5db" opacity="0.2" d="M20 30c5-5 10 5 0 10s-10-5 0-10zm60 40c5-5 10 5 0 10s-10-5 0-10zm30-20c5-5 10 5 0 10s-10-5 0-10zm-60-30c5-5 10 5 0 10s-10-5 0-10z"/></svg>') repeat;
+      color: #4a4a4a;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .error-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      margin-top: 40px;
+      position: relative;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #5d6466;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .error-code {
+      font-size: 6em;
+      font-weight: bold;
+      color: #5d6466;
+      margin: 0;
+      opacity: 0.3;
+    }
+    .error-message {
+      font-size: 1.2em;
+      color: #5d6466;
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border-left: 4px solid #c4c8c9;
+    }
+    .home-button {
+      display: inline-block;
+      background-color: #5d6466;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.2em;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+    .home-button:hover {
+      background-color: #4a5153;
+      text-decoration: none;
+    }
+    .home-button::after {
+      content: '🐾';
+      margin-left: 8px;
+      font-size: 1.3em;
+    }
+    @keyframes searching {
+      0%, 100% { transform: rotate(-10deg); }
+      50% { transform: rotate(10deg); }
+    }
+    .searching-cat {
+      font-size: 80px;
+      display: inline-block;
+      animation: searching 3s ease-in-out infinite;
+      margin: 20px 0;
+    }
+  </style>
+</head>
+<body>
+<div class="error-container">
+  <div class="error-code">404</div>
+  <div class="searching-cat">🐱🔍</div>
+  <h1>Kitty Can't Find That Page</h1>
+  <div class="error-message" th:text="${errorMessage ?: 'The page you're looking for seems to have wandered off like a curious cat.'}">Error message</div>
+  <a href="/pets" class="home-button">Back to the Litter Box</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Oops! - Racekatteklubben D'Heisino</title>
+  <style>
+    body {
+      font-family: 'Helvetica', Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 60px;
+      background: #e6e8e1 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23d1d5db" opacity="0.2" d="M20 30c5-5 10 5 0 10s-10-5 0-10zm60 40c5-5 10 5 0 10s-10-5 0-10zm30-20c5-5 10 5 0 10s-10-5 0-10zm-60-30c5-5 10 5 0 10s-10-5 0-10z"/></svg>') repeat;
+      color: #4a4a4a;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .error-container {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 40px;
+      margin-top: 40px;
+      position: relative;
+    }
+    h1 {
+      font-size: 2.5em;
+      color: #5d6466;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+    .error-image {
+      max-width: 200px;
+      margin: 20px 0;
+    }
+    .error-message {
+      font-size: 1.2em;
+      color: #5d6466;
+      margin: 20px 0;
+      padding: 15px;
+      background: #f9fafb;
+      border-radius: 8px;
+      border-left: 4px solid #c4c8c9;
+    }
+    .error-details {
+      font-size: 0.9em;
+      color: #777;
+      margin-bottom: 30px;
+    }
+    .home-button {
+      display: inline-block;
+      background-color: #5d6466;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 1.2em;
+      font-weight: 500;
+      transition: background-color 0.3s;
+      text-decoration: none;
+      margin-top: 20px;
+    }
+    .home-button:hover {
+      background-color: #4a5153;
+      text-decoration: none;
+    }
+    .home-button::after {
+      content: '🐾';
+      margin-left: 8px;
+      font-size: 1.3em;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    .cat-float {
+      font-size: 70px;
+      display: inline-block;
+      animation: float 3s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body>
+<div class="error-container">
+  <div class="cat-float">😿</div>
+  <h1>Oh no! Something went wrong</h1>
+  <div class="error-message" th:text="${errorMessage ?: 'Our cats knocked something over!'}">Error message</div>
+  <div class="error-details" th:if="${requestUrl != null}">
+    Request URL: <span th:text="${requestUrl}">URL</span>
+  </div>
+  <a href="/pets" class="home-button">Back to Safety</a>
+</div>
+</body>
+</html>
