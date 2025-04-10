@@ -62,22 +62,16 @@ public class SecurityConfig {
     @Bean
     public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
         return (request, response, authentication) -> {
-            System.out.println("Authentication successful for user: " + authentication.getName());
 
             String email = authentication.getName();
             memberRepository.updateLastLogin(email);
 
-            authentication.getAuthorities().forEach(authority ->
-                    System.out.println("Granted Authority: " + authority.getAuthority())
-            );
 
             if (authentication.getAuthorities().stream()
                     .anyMatch(grantedAuthority ->
                             grantedAuthority.getAuthority().equals("ROLE_ADMIN"))) {
-                System.out.println("Redirecting to /admin");
                 response.sendRedirect("/admin");
             } else {
-                System.out.println("Redirecting to /pets");
                 response.sendRedirect("/pets");
             }
         };
