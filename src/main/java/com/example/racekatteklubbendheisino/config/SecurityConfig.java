@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginPage("/login")
                         .loginProcessingUrl("/login")
-                        .successHandler(customAuthenticationSuccessHandler()) // Use custom success handler
+                        .successHandler(customAuthenticationSuccessHandler())
                         .failureUrl("/login?error")
                         .permitAll()
                 )
